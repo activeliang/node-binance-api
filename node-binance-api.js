@@ -189,9 +189,13 @@ module.exports = function() {
         if ( !options.APIKEY ) throw Error('apiRequest: Invalid API Key');
         if ( !options.APISECRET ) throw Error('signedRequest: Invalid API Secret');
         data.timestamp = new Date().getTime() + info.timeOffset;
+        console.log("打印时间：", data.timestamp);
         if ( typeof data.recvWindow === 'undefined' ) data.recvWindow = options.recvWindow;
+        console.log("检查recvWindow", data.recvWindow );
         let query = Object.keys(data).reduce(function(a,k){a.push(k+'='+encodeURIComponent(data[k]));return a},[]).join('&');
+        console.log("检查query:", query);
         let signature = crypto.createHmac('sha256', options.APISECRET).update(query).digest('hex'); // set the HMAC hash header
+        console.log("检查签名：", signature);
 
         let opt = reqObj(
           url+'?'+query+'&signature='+signature,
@@ -199,6 +203,7 @@ module.exports = function() {
           method,
           options.APIKEY
         );
+        console.log("检查请求参数：", opt);
         proxyRequest(opt, callback);
     };
 
@@ -1288,6 +1293,7 @@ module.exports = function() {
             let params = {asset, address, amount};
             params.name = 'API Withdraw';
             if ( addressTag ) params.addressTag = addressTag;
+            console.log("检查params1:", params);
             signedRequest(wapi+'v3/withdraw.html', params, callback, 'POST');
         },
 
