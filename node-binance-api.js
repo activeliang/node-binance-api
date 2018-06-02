@@ -97,6 +97,7 @@ module.exports = function() {
           host: parseProxy(socksproxy)[1],
           port: parseProxy(socksproxy)[2]
       }
+      console.log(opt);
       return opt;
     }
 
